@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-success text-white">
+        <h2>VAPT Report</h2>
+    </div>
+
+    <div class="card-body">
+
+        <h4>Target</h4>
+        <p>{{ scan.target }}</p>
+
+        <hr>
+
+        <h4>Executive Summary</h4>
+
+        <div class="row text-center mb-4">
+
+            <div class="col-md-3">
+                <div class="card border-primary shadow-sm">
+                    <div class="card-body">
+                        <h6>Total Ports</h6>
+                        <h2>{{ findings|length }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card border-danger shadow-sm">
+                    <div class="card-body">
+                        <h6>High</h6>
+                        <h2 class="text-danger">{{ high }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card border-warning shadow-sm">
+                    <div class="card-body">
+                        <h6>Medium</h6>
+                        <h2 class="text-warning">{{ medium }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card border-success shadow-sm">
+                    <div class="card-body">
+                        <h6>Low</h6>
+                        <h2 class="text-success">{{ low }}</h2>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <hr>
+
+        <h4>Detailed Findings</h4>
+
+        <table class="table table-bordered table-hover">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Port</th>
+                    <th>Service</th>
+                    <th>Version</th>
+                    <th>Severity</th>
+                    <th>Risk</th>
+                    <th>Recommendation</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for item in findings %}
+
+                <tr>
+
+                    <td>{{ item.port }}</td>
+
+                    <td>{{ item.service }}</td>
+
+                    <td>{{ item.version }}</td>
+
+                    <td>
+
+                        {% if item.severity == "High" %}
+                            <span class="badge bg-danger">High</span>
+
+                        {% elif item.severity == "Medium" %}
+                            <span class="badge bg-warning text-dark">Medium</span>
+
+                        {% else %}
+                            <span class="badge bg-success">Low</span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ item.risk }}</td>
+
+                    <td>{{ item.recommendation }}</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <hr>
+
+        <h4>Raw Nmap Output</h4>
+
+        <pre class="bg-dark text-light p-3 rounded"
+style="max-height:400px;overflow:auto;white-space:pre-wrap;">{{ scan.output }}</pre>
+
+        <hr>
+
+        <div class="d-flex gap-2">
+
+            <a href="/scan/pdf/{{ scan.id }}"
+               class="btn btn-danger">
+
+                Download PDF
+
+            </a>
+
+            <a href="/scan/history-page"
+               class="btn btn-secondary">
+
+                Back
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

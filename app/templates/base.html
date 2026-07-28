@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VulnScope</title>
+
+    <!-- Favicon -->
+    <link rel="icon"
+          type="image/png"
+          href="/static/images/favicon.png">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+
+    <div class="container">
+
+        <a class="navbar-brand d-flex align-items-center" href="/">
+
+            <img
+                src="/static/images/logo.png"
+                alt="VulnScope Logo"
+                width="42"
+                height="42"
+                class="me-2">
+
+            <span class="fw-bold fs-4">
+                VulnScope
+            </span>
+
+        </a>
+
+        <div>
+
+            <a href="/"
+               class="btn btn-outline-light me-2">
+                New Scan
+            </a>
+
+            <a href="/scan/history-page"
+               class="btn btn-warning">
+                History
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="container mt-5">
+
+    {% block content %}
+    {% endblock %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white">
+        <h2 class="mb-0">Scan Result</h2>
+    </div>
+
+    <div class="card-body">
+
+        <h4>Target</h4>
+
+        <p>
+            <strong>{{ target }}</strong>
+        </p>
+
+        <hr>
+
+        <!-- =============================== -->
+        <!-- Open Ports -->
+        <!-- =============================== -->
+
+        <h4>Open Ports & Findings</h4>
+
+        {% if findings %}
+
+        <table class="table table-bordered table-hover align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Port</th>
+                    <th>Service</th>
+                    <th>Version</th>
+                    <th>Severity</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+            {% for item in findings %}
+
+                <tr>
+
+                    <td>{{ item.port }}</td>
+
+                    <td>{{ item.service }}</td>
+
+                    <td>{{ item.version }}</td>
+
+                    <td>
+
+                        {% if item.severity == "High" %}
+
+                            <span class="badge bg-danger">
+                                High
+                            </span>
+
+                        {% elif item.severity == "Medium" %}
+
+                            <span class="badge bg-warning text-dark">
+                                Medium
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-success">
+                                Low
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+            <div class="alert alert-success">
+                No open ports found.
+            </div>
+
+        {% endif %}
+
+        <hr>
+
+        <!-- =============================== -->
+        <!-- SSL Information -->
+        <!-- =============================== -->
+
+        <h4>SSL / TLS Information</h4>
+
+        {% if ssl_info.enabled %}
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th width="30%">SSL Enabled</th>
+                    <td>Yes</td>
+                </tr>
+
+                <tr>
+                    <th>TLS Version</th>
+                    <td>{{ ssl_info.tls_version }}</td>
+                </tr>
+
+                <tr>
+                    <th>Issuer</th>
+                    <td>{{ ssl_info.issuer }}</td>
+                </tr>
+
+                <tr>
+                    <th>Subject</th>
+                    <td>{{ ssl_info.subject }}</td>
+                </tr>
+
+                <tr>
+                    <th>Expiry</th>
+                    <td>{{ ssl_info.expires }}</td>
+                </tr>
+
+                <tr>
+                    <th>Days Left</th>
+                    <td>{{ ssl_info.days_left }}</td>
+                </tr>
+
+            </table>
+
+        {% else %}
+
+            <div class="alert alert-secondary">
+                SSL/TLS Information Not Available.
+            </div>
+
+        {% endif %}
+
+        <hr>
+
+        <!-- =============================== -->
+        <!-- HTTP Headers -->
+        <!-- =============================== -->
+
+        <h4>HTTP Security Headers</h4>
+
+        {% if headers %}
+
+        <table class="table table-bordered">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Header</th>
+
+                    <th>Status</th>
+
+                    <th>Value</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for h in headers %}
+
+                <tr>
+
+                    <td>{{ h.header }}</td>
+
+                    <td>
+
+                        {% if h.status == "Present" %}
+
+                            <span class="badge bg-success">
+
+                                Present
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-danger">
+
+                                Missing
+
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                    <td>{{ h.value }}</td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+            <div class="alert alert-secondary">
+                No HTTP Security Header information available.
+            </div>
+
+        {% endif %}
+
+        <hr>
+
+        <!-- =============================== -->
+        <!-- Raw Output -->
+        <!-- =============================== -->
+
+        <h4>Raw Nmap Output</h4>
+
+        <pre class="bg-dark text-light p-3 rounded"
+style="max-height:500px;overflow:auto;white-space:pre-wrap;">{{ output }}</pre>
+
+        <br>
+
+        <a href="/" class="btn btn-primary">
+            New Scan
+        </a>
+
+        <a href="/scan/history-page" class="btn btn-warning">
+            History
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

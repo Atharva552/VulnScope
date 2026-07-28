@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 class="mb-4">Dashboard</h2>
+
+<div class="row mb-4">
+
+    <div class="col-md-4">
+
+        <div class="card text-center border-primary shadow">
+
+            <div class="card-body">
+
+                <h5>Total Scans</h5>
+
+                <h2>{{ total_scans }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card text-center border-success shadow">
+
+            <div class="card-body">
+
+                <h5>Completed</h5>
+
+                <h2>{{ completed }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="card text-center border-danger shadow">
+
+            <div class="card-body">
+
+                <h5>High Findings</h5>
+
+                <h2>{{ high_count }}</h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="card shadow mb-4">
+
+    <div class="card-header bg-primary text-white">
+
+        <h4>New Scan</h4>
+
+    </div>
+
+    <div class="card-body">
+
+        <form action="/scan/web" method="post">
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Target
+                </label>
+
+                <input
+                    type="text"
+                    name="target"
+                    class="form-control"
+                    placeholder="scanme.nmap.org or https://example.com"
+                    required>
+
+            </div>
+
+            <div class="mb-3">
+
+                <label class="form-label">
+                    Scan Profile
+                </label>
+
+                <select
+                    name="scan_profile"
+                    class="form-select">
+
+                    <option value="quick">
+                        ⚡ Quick Scan
+                    </option>
+
+                    <option value="service" selected>
+                        🔍 Service Version Detection
+                    </option>
+
+                    <option value="aggressive">
+                        🛡 Aggressive Scan
+                    </option>
+
+                    <option value="full">
+                        🌐 Full Port Scan
+                    </option>
+
+                </select>
+
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary">
+
+                Start Scan
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="card shadow">
+
+    <div class="card-header bg-dark text-white">
+
+        <h4>Recent Scans</h4>
+
+    </div>
+
+    <div class="card-body">
+
+        {% if recent %}
+
+        <table class="table table-hover align-middle">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>ID</th>
+                    <th>Target</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+            {% for scan in recent %}
+
+                <tr>
+
+                    <td>{{ scan.id }}</td>
+
+                    <td>{{ scan.target }}</td>
+
+                    <td>
+
+                        {% if scan.status == "Completed" %}
+
+                            <span class="badge bg-success">
+                                Completed
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge bg-warning text-dark">
+                                Running
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="alert alert-info">
+
+            No scans available.
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

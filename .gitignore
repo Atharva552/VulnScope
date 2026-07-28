@@ -4,11 +4,13 @@ __pycache__/
 *.pyo
 
 # Virtual Environment
+.venv/
 venv/
 .env
 
 # Database
 *.db
+*.db-journal
 
 # IDE
 .vscode/
@@ -18,11 +20,10 @@ venv/
 Thumbs.db
 
 # Generated Reports
-reports/*.pdf
-reports/*.html
-
-# Scan Results
-scans/*
+reports/
 
 # Logs
 *.log
+
+# Python cache
+.pytest_cache/
